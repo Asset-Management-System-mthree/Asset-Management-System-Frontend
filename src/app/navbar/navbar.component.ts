@@ -23,7 +23,7 @@ import { AuthService } from '../services/auth.service';
               <a class="nav-link" routerLink="/portfolio">Portfolio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/market">Market</a>
+              <a class="nav-link" routerLink="/dashboard">Market</a>
             </li>
           </ul>
           <ul class="navbar-nav">

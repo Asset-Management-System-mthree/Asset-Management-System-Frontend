@@ -7,7 +7,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   imports: [RouterLink, RouterLinkActive],
   template: `
     <div class="sidebar bg-dark text-light p-3 h-100">
-      <h5 class="mb-4">Dashboard</h5>
+      <h5 class="mb-4">Assets</h5>
       <ul class="nav flex-column">
         <li class="nav-item">
           <a class="nav-link text-light" 
