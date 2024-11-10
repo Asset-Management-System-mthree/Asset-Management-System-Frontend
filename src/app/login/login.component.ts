@@ -50,8 +50,7 @@ export class LoginComponent {
       this.authService.login(email, password).subscribe({
         next: (response) => {
           console.log('Login successful', response);
-          const returnUrl = localStorage.getItem('returnUrl') || '/portfolio';
-          this.authService.loginWithToken(response.token, returnUrl);
+          this.authService.loginWithToken(response.token, '/portfolio');  // Call loginWithToken() on success
         },
         error: (error) => {
           console.error('Login error', error);

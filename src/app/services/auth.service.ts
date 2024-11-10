@@ -8,10 +8,9 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = 'http://localhost:8080/auth'; // Backend API URL
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasValidSession());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-
-  private apiUrl = 'http://localhost:8080/auth'; // Backend API URL
 
   constructor(private http: HttpClient, private router: Router) {
     this.checkSession();
@@ -39,38 +38,32 @@ export class AuthService {
     );
   }
 
-  // Other AuthService methods for session handling...
+  // Handle login with token after backend authentication
   loginWithToken(token: string, returnUrl: string = '/portfolio'): void {
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', token);  // Store token in localStorage
     this.isAuthenticatedSubject.next(true);
     this.router.navigate([returnUrl]);
   }
 
+  // Logout method
   logout(): void {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('sessionTimestamp');
+    localStorage.removeItem('token');  // Remove token from localStorage
     this.isAuthenticatedSubject.next(false);
     this.router.navigate(['/login']);
   }
 
+  // Check if session is valid (whether the user is logged in)
   hasValidSession(): boolean {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const sessionTimestamp = localStorage.getItem('sessionTimestamp');
-
-    if (!isLoggedIn || !sessionTimestamp) {
-      return false;
-    }
-
-    // Session expires after 30 minutes
-    const sessionAge = Date.now() - parseInt(sessionTimestamp);
-    return sessionAge < 30 * 60 * 1000;
+    const token = localStorage.getItem('token');
+    return token !== null;  // If there's a token, the user is logged in
   }
 
+  // Periodically check if the session is valid
   private checkSession(): void {
     setInterval(() => {
       if (!this.hasValidSession()) {
         this.logout();
       }
-    }, 60 * 1000); // Check every minute
+    }, 60 * 1000); // Check session every minute
   }
 }
