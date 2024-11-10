@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-home',
@@ -109,7 +110,7 @@ export class HomeComponent implements OnInit {
     }
 
     fetchNews() {
-        this.http.get<any[]>('http://localhost:8080/api/news/financial').subscribe(
+        this.http.get<any[]>(`${environment.backendUrl}/api/news/financial`).subscribe(
             (data) => {
                 // Ensure data is an array and has the expected structure
                 if (Array.isArray(data)) {

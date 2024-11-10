@@ -13,6 +13,8 @@ import { PortfolioComponent } from './app/portfolio/portfolio.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AuthGuard } from './app/guards/auth.guard';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ChatbotComponent } from "./app/chatbot/chatbot.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -34,10 +36,11 @@ const routes: Routes = [
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, FooterComponent],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, ChatbotComponent],
   template: `
     <app-navbar></app-navbar>
     <router-outlet></router-outlet>
+    <app-chatbot></app-chatbot>
     <app-footer></app-footer>
   `
 })
@@ -47,6 +50,6 @@ bootstrapApplication(App, {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    provideAnimations()
+    provideAnimations(), provideAnimationsAsync()
   ]
 });

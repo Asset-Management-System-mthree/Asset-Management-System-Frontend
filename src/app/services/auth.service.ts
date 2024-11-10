@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/auth'; // Backend API URL
+  private apiUrl = `${environment.backendUrl}/auth`; // Backend API URL
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasValidSession());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 

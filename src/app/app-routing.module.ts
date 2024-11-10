@@ -5,6 +5,10 @@ import { SignupComponent } from './signup/signup.component';
 import { PortfolioComponent } from './portfolio/portfolio.component'; // Adjust this import according to your actual path
 import { AuthGuard } from './guards/auth.guard';
 
+import { BrowserModule } from '@angular/platform-browser';
+import { MatSnackBarModule } from '@angular/material/snack-bar';  // Import MatSnackBarModule
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  // Import BrowserAnimationsModule
+
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
@@ -13,7 +17,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes),BrowserAnimationsModule,MatSnackBarModule,BrowserModule],
     exports: [RouterModule],
 })
 export class AppRoutingModule {}

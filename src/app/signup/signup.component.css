@@ -1,0 +1,16 @@
+/* Custom green snackbar style */
+.green-snackbar {
+    background-color: #4caf50 !important; /* Green color */
+    color: white !important;  /* White text */
+    border-radius: 4px !important; /* Optional: rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important; /* Optional: shadow effect */
+  }
+  
+  /* Optional error snackbar style */
+  .mat-warn {
+    background-color: #f44336 !important; /* Red color for error */
+    color: white !important;  /* White text */
+    border-radius: 4px !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+  }
+  

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';  // Import Router
+import { MatSnackBar } from '@angular/material/snack-bar';  // Import MatSnackBar for notifications
 
 @Component({
   selector: 'app-login',
@@ -29,14 +31,17 @@ import { AuthService } from '../services/auth.service';
         </div>
       </div>
     </div>
-  `
+  `,
+  //styleUrls: ['./login.component.css']  // Link to component-specific stylesheet
 })
 export class LoginComponent {
   loginForm: FormGroup;
 
   constructor(
-      private fb: FormBuilder,
-      private authService: AuthService
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router, // Inject Router
+    private snackBar: MatSnackBar  // Inject MatSnackBar
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -50,12 +55,28 @@ export class LoginComponent {
       this.authService.login(email, password).subscribe({
         next: (response) => {
           console.log('Login successful', response);
-          this.authService.loginWithToken(response.token, '/portfolio');  // Call loginWithToken() on success
+          // Show success notification
+          this.snackBar.open('Login successful!', 'Close', {
+            duration: 3000,
+            panelClass: ['green-snackbar'],  // Custom green snackbar class
+            verticalPosition: 'top',         // Position at the top
+            horizontalPosition: 'right'      // Position at the right
+          });
+          // Redirect to portfolio page after successful login
+          this.authService.loginWithToken(response.token, '/portfolio');
         },
         error: (error) => {
           console.error('Login error', error);
+          // Show error notification
+          this.snackBar.open('Login failed. Please check your credentials.', 'Close', {
+            duration: 3000,
+            panelClass: ['red-snackbar'],  // Custom red snackbar class
+            verticalPosition: 'top',
+            horizontalPosition: 'right'
+          });
         }
       });
     }
   }
 }
+
