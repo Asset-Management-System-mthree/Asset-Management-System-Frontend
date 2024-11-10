@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MarketDataService } from '../services/market-data.service';
 
 @Component({
@@ -41,36 +42,6 @@ import { MarketDataService } from '../services/market-data.service';
           </div>
         </div>
       </div>
-
-      <div class="row mt-4">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Investment Options</h5>
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Investment Type</th>
-                      <th>Minimum Investment</th>
-                      <th>Risk Level</th>
-                      <th>Recommended Duration</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let option of investmentOptions">
-                      <td>{{option.type}}</td>
-                      <td>{{option.minInvestment}}</td>
-                      <td>{{option.riskLevel}}</td>
-                      <td>{{option.duration}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   `
 })
@@ -81,34 +52,38 @@ export class GoldComponent implements OnInit {
     prediction: 0
   };
 
-  investmentOptions = [
-    {
-      type: 'Physical Gold',
-      minInvestment: '$500',
-      riskLevel: 'Low',
-      duration: '1-5 years'
-    },
-    {
-      type: 'Gold ETFs',
-      minInvestment: '$100',
-      riskLevel: 'Medium',
-      duration: '6 months - 2 years'
-    },
-    {
-      type: 'Gold Futures',
-      minInvestment: '$1000',
-      riskLevel: 'High',
-      duration: '3-6 months'
-    }
-  ];
-
-  Math = Math;
-
-  constructor(private marketService: MarketDataService) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.marketService.getGoldData().subscribe(data => {
-      this.goldData = data;
-    });
+    this.fetchCurrentGoldPrice();
+    this.fetchPredictedGoldPrice();
   }
+
+  fetchCurrentGoldPrice() {
+    this.http.get<any>('https://api.gold-api.com/price/XAU').subscribe(
+        (data) => {
+          this.goldData.currentPrice = data.price;
+          this.goldData.priceChange = data.change_24h || 0;
+        },
+        (error) => {
+          console.error('Error fetching gold data', error);
+        }
+    );
+  }
+
+  fetchPredictedGoldPrice() {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.get<any>('http://localhost:8080/gold-prediction', { headers }).subscribe(
+        (data) => {
+          this.goldData.prediction = data.predicted_price;
+        },
+        (error) => {
+          console.error('Error fetching predicted gold price', error);
+        }
+    );
+  }
+
+  protected readonly Math = Math;
 }
