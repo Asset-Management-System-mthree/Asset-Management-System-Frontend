@@ -35,8 +35,8 @@ export class LoginComponent {
   loginForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService
+      private fb: FormBuilder,
+      private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -46,8 +46,17 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const returnUrl = localStorage.getItem('returnUrl') || '/portfolio';
-      this.authService.login(returnUrl);
+      const { email, password } = this.loginForm.value;
+      this.authService.login(email, password).subscribe({
+        next: (response) => {
+          console.log('Login successful', response);
+          const returnUrl = localStorage.getItem('returnUrl') || '/portfolio';
+          this.authService.loginWithToken(response.token, returnUrl);
+        },
+        error: (error) => {
+          console.error('Login error', error);
+        }
+      });
     }
   }
 }

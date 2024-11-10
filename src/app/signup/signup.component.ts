@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -41,7 +42,10 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 export class SignupComponent {
   signupForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+      private fb: FormBuilder,
+      private authService: AuthService
+  ) {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -52,7 +56,16 @@ export class SignupComponent {
 
   onSubmit() {
     if (this.signupForm.valid) {
-      console.log(this.signupForm.value);
+      const { name, email, password } = this.signupForm.value;
+      this.authService.signup(name, email, password).subscribe({
+        next: (response) => {
+          console.log('Signup successful', response);
+          // Redirect or show success message
+        },
+        error: (error) => {
+          console.error('Signup error', error);
+        }
+      });
     }
   }
 }
