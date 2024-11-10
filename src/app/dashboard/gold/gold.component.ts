@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MarketDataService } from '../services/market-data.service';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-gold',
@@ -60,7 +62,7 @@ export class GoldComponent implements OnInit {
   }
 
   fetchCurrentGoldPrice() {
-    this.http.get<any>('https://api.gold-api.com/price/XAU').subscribe(
+    this.http.get<any>(`${environment.goldUrl}`).subscribe(
         (data) => {
           this.goldData.currentPrice = data.price;
           this.goldData.priceChange = data.change_24h || 0;
@@ -75,7 +77,7 @@ export class GoldComponent implements OnInit {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.get<any>('http://localhost:8080/gold-prediction', { headers }).subscribe(
+    this.http.get<any>(`${environment.backendUrl}/gold-prediction`, { headers }).subscribe(
         (data) => {
           this.goldData.prediction = data.predicted_price;
         },
