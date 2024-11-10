@@ -1,0 +1,32 @@
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(to bottom right, #003973, #e5e5be);
+    padding: 40px 20px;
+    border-radius: 10px;
+    color: white;
+}
+
+/* Card styling for Prices Section */
+.prices-section .card {
+    transition: transform 0.2s;
+    border-radius: 10px;
+}
+
+
+.prices-section .card:hover {
+    transform: scale(1.05);
+}
+
+.prices-section .card-title {
+    color: #003973;
+}
+
+/* Card styling for Services Section */
+.features-section .card {
+    transition: box-shadow 0.2s ease;
+    border-radius: 10px;
+}
+
+.features-section .card:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
