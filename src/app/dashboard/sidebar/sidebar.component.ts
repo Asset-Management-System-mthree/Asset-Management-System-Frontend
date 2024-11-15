@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {Component} from "@angular/core";
+import {RouterLink, RouterLinkActive} from "@angular/router";
 
 @Component({
   selector: 'app-sidebar',
@@ -20,8 +20,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
              routerLinkActive="active">Stocks</a>
         </li>
         <li class="nav-item">
+          <!-- Update this routerLink to 'bitcoin' to match the route -->
           <a class="nav-link text-light" 
-             routerLink="crypto" 
+             routerLink="bitcoin" 
              routerLinkActive="active">Crypto</a>
         </li>
       </ul>
